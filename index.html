@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta content="IE=Edge" http-equiv="X-UA-Compatible" />
+    <meta name="description" content="panelapp_cms" />
+
+    <!-- iOS meta tags & icons -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-title" content="panelapp_cms" />
+    <!-- <link rel="apple-touch-icon" href="icons/Icon-192.png" /> -->
+
+    <!-- Favicon -->
+    <!-- <link rel="icon" href="favicon.ico" /> -->
+
+    <title>칸타패널 CMS</title>
+    <link rel="manifest" href="manifest.json" />
+    <!-- <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-messaging.js"></script> -->
+    <base href="/panel-cms-public/">
+  </head>
+  <body>
+    <!-- This script installs service_worker.js to provide PWA functionality to
+       application. For more information, see:
+       https://developers.google.com/web/fundamentals/primers/service-workers -->
+    <script>
+      // firebase.initializeApp({
+      //   apiKey: "AIzaSyATWdu0w4t3SQ01zFKolFkBVvd772F46JI",
+      //   authDomain: "panelapp-a35b0.firebaseapp.com",
+      //   projectId: "panelapp-a35b0",
+      //   storageBucket: "panelapp-a35b0.appspot.com",
+      //   messagingSenderId: "612269678975",
+      //   appId: "1:612269678975:web:33b48b29d5c40fc587fa4a",
+      //   measurementId: "G-524178LB87",
+      // });
+      // const messaging = firebase.messaging();
+
+
+      // messaging.onBackgroundMessage((message) => {
+      //   console.log("onBackgroundMessage", message);
+
+      //     const title = message.notification.title;
+      //     const options = {
+      //       body: message.notification.body,
+      //       // icon: '/firebase-logo.png'
+      //     };
+
+      //     self.registration.showNotification(title, options);
+      // });
+
+      const baseRegister = navigator.serviceWorker.register;
+      navigator.serviceWorker.register = function (url, options) {
+        if (url.startsWith('/') && url.indexOf('/', 1) === -1) {
+          url = url.substring(1);
+        }
+
+        if (options && options.scope && options.scope.startsWith('/') && options.scope.indexOf('/', 1) === -1) {
+          options.scope = options.scope.substring(1);
+        }
+
+        return baseRegister.call(navigator.serviceWorker, url, options);
+      };
+
+
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function () {
+
+          navigator.serviceWorker.register('firebase-messaging-sw.js');
+
+          // navigator.serviceWorker.register("firebase-messaging-sw.js", { scope: 'panel-cms-public'});
+
+          navigator.serviceWorker.register("flutter_service_worker.js");
+
+
+        });
+
+
+      }
+    </script>
+
+    <script
+      src="main.dart.js?v=3426515980"
+      type="application/javascript"
+    ></script>
+  </body>
+</html>
